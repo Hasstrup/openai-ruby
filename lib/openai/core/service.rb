@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'openai/core/configuration'
+require "openai/core/configuration"
 
 module OpenAI
   module Core
     class Service
-      OPENAI_API_KEY = 'OPENAI_API_KEY'
-      OPENAI_ORGANIZATION_KEY = 'OPENAI_ORGANIZATION_ID'
+      OPENAI_API_KEY = "OPENAI_API_KEY"
+      OPENAI_ORGANIZATION_KEY = "OPENAI_ORGANIZATION_ID"
 
       def initialize(organization: nil, api_key: nil)
         @config = configuration_defaults.merge(organization: organization, api_key: api_key)
@@ -17,9 +17,9 @@ module OpenAI
       attr_reader :config
 
       def configuration_defaults
-        @configuration_defaults ||= { 
-          api_key: ENV[OPENAI_API_KEY],
-          organization: ENV[OPENAI_ORGANIZATION_KEY]
+        @configuration_defaults ||= {
+          api_key:      ENV[OPENAI_API_KEY],
+          organization: ENV[OPENAI_ORGANIZATION_KEY],
         }
       end
 

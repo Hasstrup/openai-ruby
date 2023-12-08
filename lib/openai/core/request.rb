@@ -1,28 +1,17 @@
 # frozen_string_literal: true
 
+require "openai/core/input_decorator"
+require "openai/core/params_parser"
 module OpenAI
   module Core
     class Request
-      class << self
-        # should be called as in Parameters.list("gpt.chat_completion")
-        def list(key)
-          params = YAML.load_file("./parameters.yml")
-          params.fetch(*key.split(".")).keys
-        end
-
-        def fetch(key)
-          params = YAML.load_file("./parameters.yml")
-          params.fetch(*key.split("."))
-        end
-      end
-
       def initialize(key:, input:)
         @key = key
         @input = OpenAI::Core::InputDecorator.decorate(input, context: { framework: framework })
       end
 
-      delegate *%i[path method response_keys], to: :framework
-      delegate *%i[parameters errors valid?], to: :input
+      delegate(*%i[path method response_keys params], to: :framework)
+      delegate(*%i[body errors valid?], to: :input)
 
       private
 
@@ -30,9 +19,13 @@ module OpenAI
 
       def framework
         @framework ||=
-          Struct.new(*self.class.list(key), keyword_init: true).new(
-            **self.class.fetch(key),
+          Struct.new(*parser.list(key), keyword_init: true).new(
+            **parser.fetch(key),
           )
+      end
+
+      def parser
+        @parser ||= OpenAI::Core::ParamsParser.new
       end
     end
   end
