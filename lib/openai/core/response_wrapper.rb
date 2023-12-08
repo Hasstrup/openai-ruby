@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require "ostruct"
+
 module OpenAI
   module Core
     class ResponseWrapper
       def self.call(**kwargs)
-        new(**kwargs).wrap
+        new(**kwargs).call
       end
 
       def initialize(request:, response:)
@@ -13,13 +15,16 @@ module OpenAI
       end
 
       def call
-        Struct.new(*request.response_keys, keyword_init: true).new(**
-          response.body.slice(*request.response_keys))
+        payload.none? ? response : payload
       end
 
       private
 
       attr_reader :request, :response
+
+      def payload
+        @payload ||= response.slice(*request.response_keys)
+      end
     end
   end
 end

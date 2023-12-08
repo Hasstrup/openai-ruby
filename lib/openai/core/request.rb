@@ -2,26 +2,28 @@
 
 require "openai/core/input_decorator"
 require "openai/core/params_parser"
+require "forwardable"
+require "ostruct"
+
 module OpenAI
   module Core
     class Request
+      extend Forwardable
+
       def initialize(key:, input:)
         @key = key
         @input = OpenAI::Core::InputDecorator.decorate(input, context: { framework: framework })
       end
 
-      delegate(*%i[path method response_keys params], to: :framework)
-      delegate(*%i[body errors valid?], to: :input)
+      def_delegators :@framework, *%i[path method response_keys params]
+      def_delegators :@input, *%i[body errors valid?]
 
       private
 
-      attr_reader :input
+      attr_reader :input, :key
 
       def framework
-        @framework ||=
-          Struct.new(*parser.list(key), keyword_init: true).new(
-            **parser.fetch(key),
-          )
+        @framework ||= OpenStruct.new(**parser.fetch(key))
       end
 
       def parser

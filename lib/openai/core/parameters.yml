@@ -8,7 +8,8 @@ gpt:
           type: String
           required: true
         prompt:
-          type: String, Array
+          type: String,Array
+          required: true
         suffix:
           type: String
         max_tokens:
@@ -30,7 +31,7 @@ gpt:
         echo:
           type: Boolean
         stop:
-          type: String, Array
+          type: String,Array
         presence_penalty:
           type: Number
         frequency_penalty:

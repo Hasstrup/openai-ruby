@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ostruct"
+
 module OpenAI
   module Core
     class SimpleDecorator
@@ -8,7 +10,7 @@ module OpenAI
 
       def initialize(object, opts = {})
         @object = object
-        @context = Struct.new(*opts.keys, keyword_init: true).new(**opts)
+        @context = OpenStruct.new(**opts)
       end
 
       protected

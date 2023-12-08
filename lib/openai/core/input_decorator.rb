@@ -2,26 +2,29 @@
 
 require "openai/core/simple_decorator"
 require "openai/core/request_validator"
+require "forwardable"
 
 module OpenAI
   module Core
     class InputDecorator < OpenAI::Core::SimpleDecorator
+      extend Forwardable
+
       delegate_all
 
       def body
-        slice(*context.framework.params.keys)
+        @body ||= slice(*params.keys.map(&:to_sym))
       end
 
       def valid?
-        validation_errors.none?
+        errors.none?
       end
 
-      delegate :framework, to: :context
+      def params
+        @params ||= context.framework.params
+      end
 
-      private
-
-      def validation_errors
-        @validation_errors ||= OpenAI::Core::RequestValidator.call(request: self)
+      def errors
+        OpenAI::Core::RequestValidator.call(request: self)
       end
     end
   end

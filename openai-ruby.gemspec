@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "httparty", ">= 0.17.3"
 
+  spec.add_development_dependency "pry"
   spec.add_development_dependency "rspec", "~> 3.2"
   spec.add_development_dependency "rubocop", "~> 1.52"
   spec.add_development_dependency "rubocop-rspec", "~> 2.22.0"

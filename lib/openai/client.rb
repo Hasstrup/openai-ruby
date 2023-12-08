@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "openai/client"
+require "openai/gpt"
 
 module OpenAI
   class Client

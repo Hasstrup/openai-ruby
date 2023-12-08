@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "openai/core/api_response"
+require "httparty"
 require "openai/core/context"
 require "openai/core/response_wrapper"
 
@@ -24,10 +24,12 @@ module OpenAI
 
         context.succeed(OpenAI::Core::ResponseWrapper.call(
           request: request,
-          response: HTTParty.send(request.method, with_openai_root(request.path), request.body),
+          response: HTTParty.send(
+            request.method.downcase,
+            with_openai_root(request.path),
+            request_body,
+          ),
         ))
-      rescue StandardError => e
-        context.fail!(error: e)
       end
 
       private
@@ -40,6 +42,16 @@ module OpenAI
 
       def with_openai_root(path)
         ENV.fetch("OPENAI_API_ROOT", DEFAULT_OPENAI_API_ROOT) + path
+      end
+
+      def request_body
+        @request_body ||= {
+          body:    request.body.to_json,
+          headers: {
+            authorization:  "Bearer #{config.api_key}",
+            "Content-Type": "application/json",
+          },
+        }
       end
     end
   end

@@ -8,17 +8,22 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    coderay (1.1.3)
     diff-lcs (1.5.0)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     json (2.6.3)
+    method_source (1.0.0)
     mini_mime (1.1.5)
     multi_xml (0.6.0)
     parallel (1.23.0)
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
+    pry (0.14.2)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     racc (1.7.0)
     rainbow (3.1.1)
     rake (13.0.6)
@@ -67,6 +72,7 @@ PLATFORMS
 
 DEPENDENCIES
   openai-ruby!
+  pry
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 1.21)
