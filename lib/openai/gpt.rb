@@ -6,7 +6,9 @@ require "openai/core/dispatcher"
 
 module OpenAI
   class GPT < OpenAI::Core::Service
-    def completion(parameters:)
+
+    # example: OpenAI::GPT.new.legacy_completion(parameters: { model: "gpt-3.5-turbo-instruct", prompt: "Tell me a good story about the future of the internet"})
+    def legacy_completion(parameters:)
       context = OpenAI::Core::Dispatcher.call(
         request: OpenAI::Core::Request.new(key: "gpt.completions.create", input: parameters),
         config: configuration,
