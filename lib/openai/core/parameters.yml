@@ -1,0 +1,52 @@
+gpt:
+  completions:
+    create:
+      path: /v1/completions
+      method: POST
+      params:
+        model:
+          type: String
+          required: true
+        prompt:
+          type: String,Array
+          required: true
+        suffix:
+          type: String
+        max_tokens:
+          type: Integer
+        suffix:
+          type: String
+        max_tokens:
+          type: Integer
+        temperature:
+          type: Number
+        top_p:
+          type: Number
+        'n':
+         type: Number
+        stream:
+          type: Boolean
+        logprops:
+          type: Integer
+        echo:
+          type: Boolean
+        stop:
+          type: String,Array
+        presence_penalty:
+          type: Number
+        frequency_penalty:
+          type: Number
+        best_of:
+          type: Integer
+        logit_bias:
+          type: Hash
+        user:
+          type: String
+      response_keys:
+        - id
+        - object
+        - model
+        - created
+        - system_fingerprint
+        - choices
+        - usage
